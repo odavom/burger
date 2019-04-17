@@ -9,17 +9,19 @@ let PORT = process.env.PORT || 8081;
 let app = express();
 let routes = require('./controllers/burgers_controller.js');
 // give server acces to routes
-app.use('/', routes);
+
 // serve static content for the app 
 app.use(express.static(__dirname + '/public'));
 // Parse application body as JSON
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 // 
 // app.use(methodOverride('_method'));
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
+// need to put this before you parse the json
+app.use('/', routes);
 
 app.listen(PORT, function() {
     console.log('Server listening on http://localhost:' + PORT);
